@@ -14,6 +14,7 @@ def load_environment(
     dataset_split: str = "train",
     system_prompt: str | None = None,
     chain_of_thought: bool = False,
+    **kwargs,
 ) -> vf.Environment:
     if system_prompt is None:
         system_prompt = SYSTEM_PROMPT_COT if chain_of_thought else SYSTEM_PROMPT_STANDARD
@@ -24,9 +25,9 @@ def load_environment(
 
     parser = vf.MaybeThinkParser(extract_fn=extract_boxed_answer)
 
-    def correct_answer(parser, completion, answer):
+    def correct_answer(parser, completion: str, answer: bool):
         """Binary reward for correct/incorrect answer."""
-        response = parser.parse_answer(completion).lower() or ""
+        response: str = parser.parse_answer(completion).lower() or ""
         return 1.0 if response == str(answer).lower() else 0.0
 
     rubric = vf.Rubric(funcs=[correct_answer], parser=parser)
