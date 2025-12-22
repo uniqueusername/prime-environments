@@ -2,14 +2,22 @@ import verifiers as vf
 from datasets import load_dataset
 from verifiers.utils.data_utils import extract_boxed_answer
 
+SYSTEM_PROMPT_STANDARD = (
+    'Read the passage and then answer the following question with only "\\boxed{true}" or "\\boxed{false}".'
+)
+SYSTEM_PROMPT_COT = "Read the passage and then answer the following question. Please reason step by step, then provide your final answer. Format your final answer as \\boxed{true} or \\boxed{false}."
+
 
 def load_environment(
     dataset_name: str = "google/boolq",
     dataset_subset: str = "default",
     dataset_split: str = "train",
-    system_prompt: str
-    | None = "Read the passage and then answer the following question. Please reason step by step, then provide your final answer. Format your final answer as \\boxed{true} or \\boxed{false}.",
+    system_prompt: str | None = None,
+    chain_of_thought: bool = False,
 ) -> vf.Environment:
+    if system_prompt is None:
+        system_prompt = SYSTEM_PROMPT_COT if chain_of_thought else SYSTEM_PROMPT_STANDARD
+
     dataset = load_dataset(dataset_name, dataset_subset, split=dataset_split).map(
         lambda x: {"question": x["passage"] + "\n\n" + x["question"], "info": {}}
     )

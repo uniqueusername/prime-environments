@@ -32,16 +32,18 @@ Notes:
 - Use `-a` / `--env-args` to pass environment-specific configuration as a JSON object.
 
 ### Environment Arguments
-Document any supported environment arguments and their meaning. Example:
 
 | Arg | Type | Default | Description |
 | --- | ---- | ------- | ----------- |
-| `foo` | str | `"bar"` | What this controls |
-| `max_examples` | int | `-1` | Limit on dataset size (use -1 for all) |
+| `dataset_split` | str | `"train"` | Dataset split to use. |
+| `dataset_subset` | str | `"default"` | Dataset subset. |
+| `dataset_name` | str | `"google/boolq"` | HuggingFace dataset name. |
+| `system_prompt` | str | `None` | Overrides the default prompt with a custom one if supplied. |
+| `chain_of_thought` | bool | `False` | If True, the model will output a step-by-step reasoning trace before stating its answer. Otherwise, it will just output its answer. |
 
 ### Metrics
 Summarize key metrics your rubric emits and how they’re interpreted.
 
 | Metric | Meaning |
 | ------ | ------- |
-| `reward` | 1.0 if parsed answer equals target, else 0.0 |
+| `reward` | 1.0 if parsed answer equals target, else 0.0. |
