@@ -19,7 +19,8 @@ def load_environment(
         system_prompt = SYSTEM_PROMPT_COT if chain_of_thought else SYSTEM_PROMPT_STANDARD
 
     eval_dataset: vf.Dataset = load_dataset(dataset_name, split=dataset_split).map(
-        lambda x, idx: {"question": x["passage"] + "\n\n" + x["question"], "info": {"id": idx}}, with_indices=True
+        lambda x, idx: {"question": x["passage"] + "\n\n" + x["question"], "answer": x["answer"], "info": {"id": idx}},
+        with_indices=True,
     )
 
     parser: vf.Parser = vf.MaybeThinkParser(extract_fn=extract_boxed_answer)
