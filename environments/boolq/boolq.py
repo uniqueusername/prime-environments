@@ -26,7 +26,7 @@ def load_environment(
 
     def correct_answer(parser: vf.Parser, completion: vf.Messages, answer: bool, **_kwargs) -> float:
         """Binary reward for correct/incorrect answer."""
-        response: str = parser.parse_answer(completion).lower() or ""
+        response: str = (parser.parse_answer(completion) or "").lower()
         return 1.0 if response == str(answer).lower() else 0.0
 
     rubric = vf.Rubric(funcs=[correct_answer], parser=parser)
